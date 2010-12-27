@@ -1,3 +1,4 @@
 Name:           hGrid
 Version:        0.1 
 Hs-Source-Dirs: src
+build-type:     Custom
