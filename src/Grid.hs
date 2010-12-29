@@ -1,23 +1,14 @@
+
 module Grid where
 
-import Control.Monad.State as State
-import Control.Monad.Writer as Writer
+import Grid.Entities
+import Control.Monad.IO.Class
+import Data.Maybe
+import Data.Binary
 
-type Grid a = State.StateT String IO a
-
-runGrid :: Grid a -> IO a
-runGrid m = do
-                (a,s) <- runStateT m "" 
-                return a  
-
-put :: String -> String -> Grid ()
-put k v= State.put "Hola" 
-
-get :: String -> Grid String
-get k = State.get 
-
-prb = do 
-        Grid.put "Hola" ""
-        lift $ putStr "Eeeh"
-        x <- Grid.get ""
-        return x
+class Grid g where
+   get :: (Entity e k) => String -> k -> g (Maybe e)
+   put :: (Entity e k) => String -> k -> e -> g ()
+   getAll :: Binary a => String -> g [a]
+   map :: Binary a => String -> (a -> b) -> g [b]
+   keys :: Binary a => String -> g [a]
